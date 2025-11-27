@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ScreenReader {
+
+
     private static Robot robot;
     private static Tesseract instance;
 
@@ -18,6 +20,7 @@ public class ScreenReader {
         }
         if (instance == null) {
             instance = new Tesseract();
+            instance.setVariable("user_defined_dpi", "96");
         }
         BufferedImage image = robot.createScreenCapture(rect);
         try {
@@ -28,15 +31,17 @@ public class ScreenReader {
         return result;
     }
 
-    public static String readAtPos(Rectangle rect) throws AWTException {
+    public static String readAtRect(Rectangle rect) throws AWTException {
         String result = null;
         if (robot == null) {
             robot = new Robot();
         }
         if (instance == null) {
             instance = new Tesseract();
+            instance.setVariable("user_defined_dpi", "96");
         }
         BufferedImage image = robot.createScreenCapture(rect);
+
         try {
             result = instance.doOCR(image);
         } catch (TesseractException e) {
